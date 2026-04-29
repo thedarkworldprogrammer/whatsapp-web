@@ -20,12 +20,20 @@ const PORT = process.env.PORT;
 const app = express()
 
 
-const corsOption = {
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}
+const allowedOrigins = [
+    "https://whatsapp-webs.vercel.app",
+];
 
-app.use(cors(corsOption))
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true
+}));
 
 //middleware
 app.use(express.json())  // parse body data

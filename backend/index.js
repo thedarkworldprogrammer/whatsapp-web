@@ -16,29 +16,19 @@ const initializeSocket = require('./services/socketService')
 
 dotenv.config();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 const app = express()
 
 
-const allowedOrigins = [
-    "https://whatsapp-webs.vercel.app",
-];
-
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
+    origin: "https://whatsapp-webs.vercel.app",
     credentials: true
 }));
 
 //middleware
 app.use(express.json())  // parse body data
 app.use(cookieparser())  // parse token on every req
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 // db connection
 connectDb()
